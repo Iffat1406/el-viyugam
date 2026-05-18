@@ -27,4 +27,15 @@ export class AuthService {
       throw new InternalServerErrorException('Could not create user');
     }
   }
+
+  async logout(refreshToken?: string) {
+    if (refreshToken) {
+      await this.prisma.user.updateMany({
+        where: { refreshToken },
+        data: { refreshToken: null },
+      });
+    }
+
+    return { message: 'Logged out successfully' };
+  }
 }
