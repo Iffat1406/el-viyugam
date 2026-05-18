@@ -13,7 +13,6 @@ import {
   REFRESH_TOKEN_COOKIE_NAME,
   getRefreshTokenCookieOptions,
 } from './auth.constants.js';
-import { getCookieValue } from './cookie.util.js';
 import { SignupDto } from './dto/signup.dto.js';
 
 @Controller('auth')
@@ -32,10 +31,9 @@ export class AuthController {
     @Req() request: Request,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const refreshToken = getCookieValue(
-      request.headers.cookie,
-      REFRESH_TOKEN_COOKIE_NAME,
-    );
+    const refreshToken = request.cookies?.[REFRESH_TOKEN_COOKIE_NAME] as
+      | string
+      | undefined;
 
     response.clearCookie(
       REFRESH_TOKEN_COOKIE_NAME,
